@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JLPlayer - Reprodutor de vídeos</title>
+
+    <!-- Link style jlplayer.css -->
+    <link rel="stylesheet" href="jlplayer.css">
+
+</head>
+
+<body bgcolor="black">
+
+    <form class="video-container" action="" method="GET">
+
+        <!-- Chamar elemento vídeo com class jlplayer-video -->
+        <video id="player" poster="https://i.pinimg.com/originals/cf/ce/2f/cfce2fa4cc0ccdc49cf1482c355a50b8.gif" preload="auto" class="jlplayer-video">
+            <source src="https://video.wixstatic.com/video/8f62cb_33da06f2a7bf40ee811070101fd1025b/480p/mp4/file.mp4" type="video/mp4">
+            <!-- <track kind="captions" src="legenda.vtt" default> -->
+        </video>
+
+    </form>
+
+<script type="text/javascript">
+/*
+    var video = document.getElementById("player");
+
+video.addEventListener('loadedmetadata', function() {
+    if (video.buffered.length === 0) return;
+    const bufferedSeconds = video.buffered.end(0) - video.buffered.start(0);
+    console.log(`${bufferedSeconds} segundos de vídeo estão prontos para serem reproduzidos.`);
+    setTimeout(function(){
+        document.getElementById('player').setAttribute('poster','blueplay.jpg');
+        console.log("OK");
+     }, 3500);
+  });*/
+</script>
+    <!-- Inclusão jlplayer -->
+    <script src="jlplayer.js" async></script>
+
+</body>
+
+</html>
