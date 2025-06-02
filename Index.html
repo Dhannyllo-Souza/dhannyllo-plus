@@ -1,0 +1,2708 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhannyllo+ ULTRA IA - Plataforma Suprema Integrada</title>
+    <meta name="description" content="Dhannyllo+ ULTRA IA: Streaming de vídeos, áudio, jogos, cursos, livros, rede social, chat, IA avançada, ferramentas de criação, marketplace, e conteúdo espiritual em uma única plataforma integrada.">
+    <meta name="keywords" content="streaming, vídeos, áudio, jogos, cursos, livros, rede social, chat, inteligência artificial, IA, marketplace, espiritualidade, bíblia, gnóstico, apócrifo, Dhannyllo+, entretenimento">
+
+
+    <meta property="og:title" content="Dhannyllo+ ULTRA IA - Plataforma Completa">
+    <meta property="og:description" content="Entretenimento e conhecimento ilimitados com vídeos, jogos, cursos, IA e conteúdo espiritual.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://example.com/logo.png">
+    <meta property="og:url" content="https://dhannyllo.com">
+    <meta name="theme-color" content="#6366f1">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Dyslexic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+
+
+    <style>
+        /* --- CSS Global e Variáveis --- */
+        :root {
+            --primary-color: #6366f1; /* Indigo */
+            --primary-dark: #4f46e5;
+            --secondary-color: #ec4899; /* Pink */
+            --accent-color: #10b981; /* Green */
+            --background-dark: #0f172a; /* Dark Blue-Gray */
+            --background-light: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-bg: #1f2937; /* Darker Blue-Gray */
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
+            --shadow-glow: 0 0 15px var(--primary-color), 0 0 25px var(--secondary-color);
+            --error-color: #ef4444; /* Red */
+            --success-color: #22c55e; /* Green */
+        }
+
+
+        /* --- Estilos Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Evita scroll horizontal */
+        }
+
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+
+        input, textarea, select {
+            background-color: var(--background-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+
+        h1, h2, h3, h4 {
+            text-align: center;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+        }
+
+
+        header {
+            background: var(--background-dark);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            z-index: 100;
+            position: relative;
+        }
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+
+        /* --- Navegação e Abas --- */
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            background: var(--background-light);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem auto;
+            max-width: 90%;
+            box-shadow: var(--shadow-md);
+            z-index: 90;
+        }
+
+
+        .tab-button {
+            background-color: transparent;
+            color: var(--text-secondary);
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.4rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            flex-shrink: 0; /* Prevents shrinking */
+        }
+
+
+        .tab-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+
+        .tab-button:hover:not(.active) {
+            background-color: var(--background-dark);
+            color: var(--primary-color);
+        }
+
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-lg);
+            margin: 1.5rem auto;
+            max-width: 1200px;
+            width: 90%;
+            border: 1px solid var(--border-color);
+        }
+
+
+        .tab-content.active {
+            display: block;
+        }
+
+
+        /* --- Seções Específicas --- */
+
+
+        /* Streaming Section */
+        #streamingSection .video-player-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: black;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+
+        #streamingSection video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Keep aspect ratio, letterbox if needed */
+        }
+
+
+        #streamingSection .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+
+        #streamingSection .video-library {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+
+        #streamingSection .video-item {
+            background: var(--background-light);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+
+        #streamingSection .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+
+        #streamingSection .video-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+
+        #streamingSection .video-item h4 {
+            padding: 1rem;
+            margin: 0;
+            font-size: 1.1rem;
+            text-align: left;
+            background: none;
+            -webkit-text-fill-color: var(--text-primary);
+        }
+
+
+        /* IA Section */
+        #iaSection .ia-tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+
+        #iaSection .ia-tool-card {
+            background: var(--background-light);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #iaSection .ia-tool-card h3 {
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+        }
+
+
+        #iaSection .ia-tool-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+
+        #iaSection .chat-container,
+        #iaSection .rpg-container,
+        #iaSection .prayer-generator-container {
+            background: var(--background-light);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+
+        #iaSection .chat-messages,
+        #iaSection .rpg-output,
+        #iaSection .prayer-output {
+            min-height: 100px;
+            background: var(--background-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+
+
+        .message-user {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem 1rem 0 1rem;
+            align-self: flex-end;
+            margin-bottom: 0.5rem;
+            max-width: 80%;
+            text-align: right;
+        }
+
+
+        .message-ai {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 1rem 1rem 1rem 0;
+            align-self: flex-start;
+            margin-bottom: 0.5rem;
+            max-width: 80%;
+            text-align: left;
+        }
+
+
+        /* Community Section */
+        #communitySection .post-form,
+        #communitySection .chat-input-container {
+            background: var(--background-light);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+
+        #communitySection .post-list,
+        #communitySection .chat-messages-container {
+            background: var(--background-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+
+        #communitySection .post-item {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-md);
+        }
+
+
+        #communitySection .post-item h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--primary-color);
+            text-align: left;
+            background: none;
+            -webkit-text-fill-color: unset;
+        }
+
+
+        #communitySection .post-item p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-align: left;
+        }
+
+
+        #communitySection .post-item .timestamp {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+
+        /* Spiritual Content */
+        #spiritualSection .religious-text-viewer {
+            background: var(--background-light);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+            margin-top: 1.5rem;
+        }
+
+
+        #spiritualSection .religious-text-viewer h3 {
+            margin-bottom: 1rem;
+            text-align: left;
+            background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        #spiritualSection .text-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+
+        #spiritualSection .text-content-display {
+            background: var(--background-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            color: var(--text-secondary);
+        }
+
+
+        #spiritualSection .text-content-display strong {
+            color: var(--primary-color);
+        }
+
+
+        /* Tools Section */
+        #toolsSection .tool-card {
+            background: var(--background-light);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+
+        #toolsSection .tool-card h3 {
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        #toolsSection .tool-card label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+
+
+        #weatherInfo p {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+
+
+        /* Profile Section */
+        #profileSection .profile-info {
+            background: var(--background-light);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+
+        #profileSection .profile-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+
+        #profileSection .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+
+        /* Accessibility Controls */
+        .accessibility-toggle {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2000;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+
+        .accessibility-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+
+        .accessibility-controls {
+            position: fixed;
+            top: 170px;
+            right: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-lg);
+            z-index: 1900;
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+
+        .accessibility-controls.active {
+            display: flex;
+        }
+
+
+        .accessibility-controls button {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+
+        /* High Contrast Mode */
+        body.high-contrast {
+            background-color: black !important;
+            color: white !important;
+        }
+
+
+        .high-contrast .tab-button:not(.active) {
+            background-color: black !important;
+            color: white !important;
+            border: 1px solid white !important;
+        }
+
+
+        .high-contrast .tab-button.active {
+            background-color: white !important;
+            color: black !important;
+            box-shadow: 0 0 15px yellow, 0 0 25px orange !important;
+        }
+
+
+        .high-contrast .accessibility-toggle {
+            background-color: white !important;
+            color: black !important;
+        }
+
+
+        .high-contrast .message-user {
+             background-color: #00bcd4 !important; /* Cyan */
+             color: black !important;
+        }
+        .high-contrast .message-ai {
+             background-color: #66bb6a !important; /* Green */
+             color: black !important;
+        }
+
+
+
+
+        /* Dyslexic Font */
+        body.dyslexic-font {
+            font-family: "Open Dyslexic", sans-serif !important;
+        }
+        @font-face {
+            font-family: 'Open Dyslexic';
+            src: url('https://raw.githubusercontent.com/antijingoist/opendyslexic-webfont/master/OpenDyslexic-Regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            transition: opacity 1s ease-in-out;
+        }
+
+
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 1.2s linear infinite;
+        }
+
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+
+        #loading-screen p {
+            margin-top: 1rem;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+        }
+
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+
+        .close-button:hover {
+            color: var(--primary-color);
+        }
+
+
+        /* Notifications */
+        #notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+
+        .notification {
+            background-color: var(--background-light);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-md);
+            animation: fadeInOut 5s forwards;
+            min-width: 250px;
+        }
+
+
+        .notification.success {
+            border-left: 5px solid var(--success-color);
+        }
+
+
+        .notification.error {
+            border-left: 5px solid var(--error-color);
+        }
+
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+
+        /* AI Assistant Button */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-glow);
+            animation: pulse 3s infinite;
+            z-index: 1000;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+
+        .ai-assistant:hover {
+            transform: scale(1.1);
+        }
+
+
+        @keyframes pulse {
+            0% { box-shadow: var(--shadow-md); }
+            50% { box-shadow: var(--shadow-glow); }
+            100% { box-shadow: var(--shadow-md); }
+        }
+
+
+        /* Home Section */
+        #homeSection {
+            text-align: center;
+        }
+
+
+        #homeSection .hero-section {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1500x500?text=Fundo+Dhannyllo%2B+IA'); /* Placeholder de imagem */
+            background-size: cover;
+            background-position: center;
+            padding: 4rem 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+
+        #homeSection .hero-section h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+
+        #homeSection .hero-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+
+        #homeSection .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+
+        #homeSection .content-card {
+            background: var(--background-light);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+
+        #homeSection .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+
+        #homeSection .content-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+
+        #homeSection .content-card h3 {
+            margin: 0 0 0.5rem 0;
+            text-align: left;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        #homeSection .content-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.5rem;
+            }
+
+
+            .tab-button {
+                width: 100%;
+                text-align: center;
+            }
+
+
+            .tab-content {
+                padding: 1rem;
+                width: 95%;
+            }
+
+
+            #homeSection .hero-section h2 {
+                font-size: 2rem;
+            }
+
+
+            #homeSection .hero-section p {
+                font-size: 1rem;
+            }
+
+
+            #streamingSection .video-library,
+            #iaSection .ia-tool-grid,
+            #homeSection .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .ai-assistant, .accessibility-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 15px;
+                right: 15px;
+            }
+
+
+            .accessibility-toggle {
+                top: 80px;
+                right: 15px;
+            }
+
+
+            .accessibility-controls {
+                top: 140px;
+                right: 15px;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+
+            .tab-button {
+                font-size: 0.9rem;
+            }
+
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Carregando Dhannyllo+ ULTRA IA...</p>
+    </div>
+
+
+    <header>
+        <h1>Dhannyllo+ ULTRA IA</h1>
+    </header>
+
+
+    <nav>
+        <button class="tab-button active" onclick="openTab(event, 'homeSection')">Home</button>
+        <button class="tab-button" onclick="openTab(event, 'streamingSection')">Streaming</button>
+        <button class="tab-button" onclick="openTab(event, 'iaSection')">IA Avançada</button>
+        <button class="tab-button" onclick="openTab(event, 'communitySection')">Comunidade</button>
+        <button class="tab-button" onclick="openTab(event, 'coursesBooksSection')">Cursos & Livros</button>
+        <button class="tab-button" onclick="openTab(event, 'marketplaceSection')">Marketplace</button>
+        <button class="tab-button" onclick="openTab(event, 'spiritualSection')">Espiritualidade</button>
+        <button class="tab-button" onclick="openTab(event, 'toolsSection')">Ferramentas</button>
+        <button class="tab-button" onclick="openTab(event, 'profileSection')" id="profileTabButton" style="display:none;">Perfil</button>
+        <button class="tab-button" onclick="openModal('login')">Login / Cadastro</button>
+        <button class="tab-button" id="logoutButton" style="display:none;">Sair</button>
+    </nav>
+
+
+    <main>
+        <section id="homeSection" class="tab-content active">
+            <div class="hero-section">
+                <h2>Seu Universo de Entretenimento e Conhecimento</h2>
+                <p>Descubra o futuro com streaming ilimitado, IA avançada, comunidade e muito mais.</p>
+                <button onclick="openTab(null, 'streamingSection')">Comece a Assistir Agora</button>
+            </div>
+
+
+            <h2>Conteúdo em Destaque</h2>
+            <div class="content-grid">
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Video+Destaque+1" alt="Video Destaque 1">
+                    <h3>Série IA: O Futuro Chegou</h3>
+                    <p>Uma jornada profunda sobre o impacto da inteligência artificial no nosso dia a dia.</p>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Curso+Dev+Web" alt="Curso de Desenvolvimento Web">
+                    <h3>Curso de Desenvolvimento Web Completo</h3>
+                    <p>Aprenda a criar aplicações web modernas do zero ao avançado.</p>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Comunidade+Ativa" alt="Comunidade Ativa">
+                    <h3>Junte-se à Nossa Comunidade</h3>
+                    <p>Conecte-se com pessoas, compartilhe ideias e participe de discussões.</p>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Biblia+Interativa" alt="Bíblia Interativa">
+                    <h3>Estudos Bíblicos Interativos</h3>
+                    <p>Aprofunde-se nas escrituras sagradas com comentários e ferramentas.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="streamingSection" class="tab-content">
+            <h2>Streaming Premium</h2>
+            <div class="video-player-container">
+                <video id="mainVideoPlayer" controls autoplay>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
+            </div>
+            <div class="controls">
+                <button id="playPauseButton"><i class="fas fa-play"></i></button>
+                <input type="range" id="progressBar" value="0" min="0" max="100">
+                <span id="currentTime">0:00</span> / <span id="durationTime">0:00</span>
+                <button id="fullscreenButton"><i class="fas fa-expand"></i></button>
+                <input type="file" id="fileInput" accept="video/*" style="display: none;">
+                <button onclick="document.getElementById('fileInput').click()">Upload Vídeo</button>
+                <div id="uploadProgress" style="display:none; color: var(--accent-color); margin-left: 1rem;">0%</div>
+            </div>
+
+
+            <h3>Sua Biblioteca de Vídeos</h3>
+            <div id="videoLibrary" class="video-library">
+                </div>
+
+
+            <h3>Recomendações Inteligentes</h3>
+            <div id="recommendedVideos" class="video-library">
+                <div class="video-item" data-src="https://www.w3schools.com/html/movie.mp4">
+                    <img src="https://via.placeholder.com/250x150?text=Recomendado+1" alt="Recomendado 1">
+                    <h4>Documentário: O Poder da Mente</h4>
+                    <p>AI-Recommended</p>
+                </div>
+                <div class="video-item" data-src="https://www.w3schools.com/html/mov_bbb.mp4">
+                    <img src="https://via.placeholder.com/250x150?text=Recomendado+2" alt="Recomendado 2">
+                    <h4>Aula de Meditação Guiada</h4>
+                    <p>AI-Recommended</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="iaSection" class="tab-content">
+            <h2>Recursos de IA Avançada</h2>
+            <div class="ia-tool-grid">
+                <div class="ia-tool-card">
+                    <h3>Chat Inteligente</h3>
+                    <p>Converse com nossa IA ultra-avançada sobre qualquer tópico.</p>
+                    <button onclick="showIATool('iaChat')">Abrir Chat</button>
+                </div>
+                <div class="ia-tool-card">
+                    <h3>Gerador de Orações</h3>
+                    <p>Crie orações personalizadas para diferentes temas.</p>
+                    <button onclick="showIATool('prayerGenerator')">Gerar Oração</button>
+                </div>
+                <div class="ia-tool-card">
+                    <h3>RPG Interativo</h3>
+                    <p>Explore mundos virtuais e tome decisões com a ajuda da IA.</p>
+                    <button onclick="showIATool('rpgGame')">Jogar RPG</button>
+                </div>
+                <div class="ia-tool-card">
+                    <h3>Simulador de Encarnações</h3>
+                    <p>Descubra lições espirituais de suas vidas passadas (simulado).</p>
+                    <button onclick="simularEncarnacao()">Ativar Simulador</button>
+                </div>
+                <div class="ia-tool-card">
+                    <h3>Ferramenta de Tradução IA</h3>
+                    <p>Traduza textos instantaneamente com nossa IA multilíngue.</p>
+                    <button onclick="showIATool('iaTranslator')">Abrir Tradutor</button>
+                </div>
+                <div class="ia-tool-card">
+                    <h3>Resumidor de Texto IA</h3>
+                    <p>Obtenha resumos concisos de documentos e artigos longos.</p>
+                    <button onclick="showIATool('iaSummarizer')">Abrir Resumidor</button>
+                </div>
+            </div>
+
+
+            <div id="iaChat" class="chat-container" style="display:none;">
+                <h3>Chat com Dhannyllo+ IA</h3>
+                <div id="chatMessages" class="chat-messages"></div>
+                <input type="text" id="chatInput" placeholder="Digite sua mensagem para a IA...">
+                <button onclick="sendAIChatMessage()">Enviar</button>
+            </div>
+
+
+            <div id="prayerGenerator" class="prayer-generator-container" style="display:none;">
+                <h3>Gerador de Orações</h3>
+                <input type="text" id="prayerThemeInput" placeholder="Tema da oração (ex: paz, gratidão, cura)">
+                <button onclick="gerarOracao()">Gerar Oração</button>
+                <div id="saidaOracao" class="prayer-output"></div>
+            </div>
+
+
+            <div id="rpgGame" class="rpg-container" style="display:none;">
+                <h3>RPG Interativo: O Jardim do Éden</h3>
+                <p id="rpgIntro">Você desperta no Jardim do Éden, o paraíso recém-criado. Diante de você, um majestoso leão dourado se aproxima curiosamente.</p>
+                <div id="rpgChoices">
+                    <button onclick="rpgResposta('nomear')">Nomear a criatura</button>
+                    <button onclick="rpgResposta('contemplar')">Contemplar a beleza do Éden</button>
+                </div>
+                <div id="saidaRPG" class="rpg-output"></div>
+            </div>
+
+
+            <div id="iaTranslator" class="ia-tool-card" style="display:none;">
+                <h3>Ferramenta de Tradução IA</h3>
+                <textarea id="translateInput" placeholder="Digite o texto para traduzir..." rows="5"></textarea>
+                <select id="translateLang">
+                    <option value="en">Inglês</option>
+                    <option value="es">Espanhol</option>
+                    <option value="fr">Francês</option>
+                    <option value="pt">Português</option>
+                </select>
+                <button onclick="translateText()">Traduzir</button>
+                <p>Resultado: <span id="translatedOutput"></span></p>
+            </div>
+
+
+            <div id="iaSummarizer" class="ia-tool-card" style="display:none;">
+                <h3>Resumidor de Texto IA</h3>
+                <textarea id="summarizeInput" placeholder="Cole o texto para resumir..." rows="8"></textarea>
+                <button onclick="summarizeText()">Resumir</button>
+                <p>Resumo: <span id="summarizedOutput"></span></p>
+            </div>
+        </section>
+
+
+        <section id="communitySection" class="tab-content">
+            <h2>Comunidade Dhannyllo+</h2>
+            <h3>Compartilhe e Conecte-se</h3>
+            <div class="post-form">
+                <textarea id="postContent" placeholder="O que você está pensando?"></textarea>
+                <button onclick="createPost()">Publicar</button>
+            </div>
+            <div id="postList" class="post-list">
+                </div>
+
+
+            <h3>Chat em Tempo Real</h3>
+            <div class="chat-messages-container" id="realtimeChatMessages">
+                </div>
+            <div class="chat-input-container">
+                <input type="text" id="realtimeChatInput" placeholder="Digite sua mensagem...">
+                <button onclick="sendRealtimeChatMessage()">Enviar</button>
+            </div>
+        </section>
+
+
+        <section id="coursesBooksSection" class="tab-content">
+            <h2>Cursos & Livros</h2>
+            <div class="content-grid">
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Curso+Blockchain" alt="Curso Blockchain">
+                    <h3>Curso: Introdução à Blockchain</h3>
+                    <p>Entenda a tecnologia por trás das criptomoedas e NFTs.</p>
+                    <button>Ver Curso</button>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Livro+Metaverso" alt="Livro Metaverso">
+                    <h3>Livro: O Metaverso e Você</h3>
+                    <p>Um guia completo para explorar o futuro da internet.</p>
+                    <button>Ler Livro</button>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Curso+Design+UX" alt="Curso Design UX">
+                    <h3>Curso: Design de Experiência do Usuário (UX)</h3>
+                    <p>Crie interfaces intuitivas e agradáveis.</p>
+                    <button>Ver Curso</button>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Livro+Espiritualidade" alt="Livro Espiritualidade">
+                    <h3>Livro: A Arte de Viver Plenamente</h3>
+                    <p>Descubra o caminho para a paz interior e a felicidade.</p>
+                    <button>Ler Livro</button>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="marketplaceSection" class="tab-content">
+            <h2>Marketplace</h2>
+            <div class="content-grid">
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Produto+IA" alt="Produto IA">
+                    <h3>Robô Assistente IA</h3>
+                    <p>Seu assistente pessoal para automatizar tarefas diárias.</p>
+                    <p>Preço: $999.00</p>
+                    <button>Comprar</button>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=NFT+Arte" alt="NFT Arte">
+                    <h3>NFT: Obra de Arte Digital Única</h3>
+                    <p>Invista em arte digital exclusiva.</p>
+                    <p>Preço: 2.5 ETH</p>
+                    <button>Comprar</button>
+                </div>
+                <div class="content-card">
+                    <img src="https://via.placeholder.com/300x180?text=Servico+Consultoria" alt="Serviço Consultoria">
+                    <h3>Consultoria em IA para Empresas</h3>
+                    <p>Otimize seus negócios com soluções de inteligência artificial.</p>
+                    <p>Preço: $500/hora</p>
+                    <button>Contratar</button>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="spiritualSection" class="tab-content">
+            <h2>Conteúdo Espiritual e Sagrado</h2>
+            <div class="religious-text-viewer">
+                <h3>Leitura da Bíblia e Textos Apócrifos</h3>
+                <div class="text-controls">
+                    <select id="bookSelect" onchange="carregarCapitulos()">
+                        <option value="">Selecione um Livro</option>
+                    </select>
+                    <select id="chapterSelect" onchange="carregarVersiculos()">
+                        <option value="">Selecione um Capítulo</option>
+                    </select>
+                    <select id="verseSelect">
+                        <option value="">Selecione um Versículo</option>
+                    </select>
+                    <button onclick="exibirVersiculo()">Exibir Versículo</button>
+                </div>
+                <div id="textContentDisplay" class="text-content-display">
+                    <p>Selecione um livro, capítulo e versículo para começar a leitura.</p>
+                </div>
+            </div>
+            </section>
+
+
+        <section id="toolsSection" class="tab-content">
+            <h2>Ferramentas Inteligentes</h2>
+            <div class="tool-card">
+                <h3>Conversor de Unidades</h3>
+                <label for="inputValue">Valor:</label>
+                <input type="number" id="inputValue" placeholder="Digite o valor">
+                <label for="fromUnit">De:</label>
+                <select id="fromUnit"></select>
+                <label for="toUnit">Para:</label>
+                <select id="toUnit"></select>
+                <button id="convertButton">Converter</button>
+                <p>Resultado: <span id="conversionResult"></span></p>
+            </div>
+
+
+            <div class="tool-card">
+                <h3>Gerador de Senhas Seguras</h3>
+                <label for="passwordLength">Comprimento da Senha (8-32):</label>
+                <input type="number" id="passwordLength" value="12" min="8" max="32">
+                <button id="generatePasswordButton">Gerar Senha</button>
+                <p>Senha Gerada: <span id="generatedPassword"></span></p>
+            </div>
+
+
+            <div class="tool-card">
+                <h3>Previsão do Tempo (OpenWeatherMap API)</h3>
+                <label for="cityInput">Cidade:</label>
+                <input type="text" id="cityInput" placeholder="Ex: São Paulo">
+                <button onclick="getWeatherData()">Obter Previsão</button>
+                <div id="weatherInfo">
+                    <p>Carregando dados meteorológicos...</p>
+                </div>
+            </div>
+            </section>
+
+
+        <section id="profileSection" class="tab-content">
+            <h2>Seu Perfil</h2>
+            <div class="profile-info">
+                <img id="profilePicture" src="https://via.placeholder.com/120?text=Perfil" alt="Foto de Perfil" class="profile-picture">
+                <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                <button onclick="document.getElementById('profileImageInput').click()">Alterar Foto</button>
+                <p>Nome: <span id="profileName">Visitante</span></p>
+                <p>Email: <span id="profileEmail">N/A</span></p>
+                <p>Plano: <span id="profilePlan">Grátis</span></p>
+                <button onclick="updateProfile()">Salvar Alterações</button>
+                <button onclick="resetPassword()">Redefinir Senha</button>
+            </div>
+            <h3 style="margin-top: 2rem;">Configurações da Conta</h3>
+            </section>
+    </main>
+
+
+    <div id="login" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('login')">&times;</span>
+            <h2>Login / Cadastro</h2>
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Senha">
+            <button onclick="loginUser()">Entrar</button>
+            <button onclick="registerUser()" style="background-color: var(--accent-color);">Cadastrar</button>
+            <p style="margin-top: 1rem; text-align: center;"><a href="#" onclick="forgotPassword()">Esqueceu a senha?</a></p>
+            <p style="margin-top: 1rem; text-align: center;">Ou entre com:</p>
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+                <button onclick="signInWithGoogle()" style="background-color: #DB4437;"><i class="fab fa-google"></i> Google</button>
+                <button onclick="signInWithFacebook()" style="background-color: #4267B2;"><i class="fab fa-facebook"></i> Facebook</button>
+            </div>
+        </div>
+    </div>
+
+
+    <button class="accessibility-toggle" onclick="toggleAccessibilityControls()">
+        <i class="fas fa-universal-access"></i>
+    </button>
+    <div class="accessibility-controls" id="accessibilityControls">
+        <button onclick="toggleHighContrast()">Alto Contraste</button>
+        <button onclick="toggleDyslexicFont()">Fonte Disléxica</button>
+        <button onclick="increaseFontSize()">Aumentar Fonte</button>
+        <button onclick="decreaseFontSize()">Diminuir Fonte</button>
+        <button onclick="resetFontSize()">Resetar Fonte</button>
+    </div>
+
+
+    <button class="ai-assistant" id="aiAssistantButton">
+        <i class="fas fa-robot"></i>
+    </button>
+
+
+    <div id="notification-container"></div>
+
+
+    <script>
+        // --- Firebase Configuration (Substitua com suas próprias credenciais) ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+
+        // Initialize Firebase
+        let app;
+        let auth;
+        let db;
+        let storage;
+
+
+        function initFirebase() {
+            try {
+                if (!firebase.apps.length) {
+                    app = firebase.initializeApp(firebaseConfig);
+                    auth = firebase.auth();
+                    db = firebase.firestore();
+                    storage = firebase.storage();
+                    console.log("Firebase initialized successfully.");
+                } else {
+                    app = firebase.app(); // if already initialized, use that app
+                    auth = firebase.auth();
+                    db = firebase.firestore();
+                    storage = firebase.storage();
+                    console.log("Firebase already initialized.");
+                }
+            } catch (error) {
+                console.error("Erro ao inicializar Firebase:", error);
+                showNotification(`Erro ao conectar com Firebase: ${error.message}`, 'error');
+            }
+        }
+
+
+        // --- Global Variables ---
+        let currentUser = null;
+        let userPlan = null; // Simulação de plano: 'free', 'premium'
+        const plans = {
+            free: { name: 'Grátis', storageLimit: 100 * 1024 * 1024, maxVideos: 5 }, // 100MB
+            premium: { name: 'Premium', storageLimit: 10 * 1024 * 1024 * 1024, maxVideos: 100 } // 10GB
+        };
+
+
+        // --- Pre-loader Logic ---
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                initializeApp();
+            }, 1000); // Allow fade out animation
+        });
+
+
+        function initializeApp() {
+            initFirebase();
+            setupAuthListener();
+            setupEventListeners();
+            loadSettings();
+            handleResize();
+            loadAllVideos(); // Load initial videos for streaming
+            carregarBibliaData(); // Load Bible/Spiritual data
+            populateUnitSelects(); // Populates unit converter
+            updateSEO("Dhannyllo+ ULTRA IA - Plataforma Suprema Integrada", "Dhannyllo+ ULTRA IA: Streaming de vídeos, áudio, jogos, cursos, livros, rede social, chat, IA avançada, ferramentas de criação, marketplace, e conteúdo espiritual em uma única plataforma integrada.");
+            showNotification("Dhannyllo+ ULTRA IA iniciado com sucesso!", 'success');
+            console.log("Aplicação Dhannyllo+ ULTRA IA carregada e pronta.");
+        }
+
+
+        // --- Authentication (Firebase Auth) ---
+        function setupAuthListener() {
+            if (auth) {
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        currentUser = user;
+                        // Fetch user data from Firestore
+                        db.collection('users').doc(user.uid).get().then(doc => {
+                            if (doc.exists) {
+                                currentUser.displayName = doc.data().name || user.displayName;
+                                currentUser.plan = doc.data().plan || 'free';
+                                currentUser.profilePic = doc.data().profilePic || 'https://via.placeholder.com/120?text=Perfil';
+                                userPlan = plans[currentUser.plan];
+                                updateProfileInfo();
+                                showNotification(`Bem-vindo, ${currentUser.displayName}!`, 'success');
+                            } else {
+                                // New user, create document
+                                db.collection('users').doc(user.uid).set({
+                                    name: user.displayName || user.email,
+                                    email: user.email,
+                                    plan: 'free',
+                                    profilePic: 'https://via.placeholder.com/120?text=Perfil',
+                                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                                }).then(() => {
+                                    currentUser.displayName = user.displayName || user.email;
+                                    currentUser.plan = 'free';
+                                    currentUser.profilePic = 'https://via.placeholder.com/120?text=Perfil';
+                                    userPlan = plans['free'];
+                                    updateProfileInfo();
+                                    showNotification(`Bem-vindo, ${currentUser.displayName}! Sua conta foi criada.`, 'success');
+                                }).catch(error => console.error("Erro ao criar doc de usuário:", error));
+                            }
+                        }).catch(error => console.error("Erro ao buscar doc de usuário:", error));
+
+
+                        document.getElementById('profileTabButton').style.display = 'block';
+                        document.getElementById('logoutButton').style.display = 'block';
+                        closeModal('login');
+                    } else {
+                        currentUser = null;
+                        userPlan = null;
+                        updateProfileInfo(); // Resets profile info
+                        document.getElementById('profileTabButton').style.display = 'none';
+                        document.getElementById('logoutButton').style.display = 'none';
+                        // Keep login modal open if it was triggered by a requirement
+                    }
+                });
+            }
+        }
+
+
+        async function loginUser() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            if (!email || !password) {
+                showNotification("Por favor, preencha email e senha.", 'error');
+                return;
+            }
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+            } catch (error) {
+                showNotification(`Erro de login: ${error.message}`, 'error');
+                console.error("Erro de login:", error);
+            }
+        }
+
+
+        async function registerUser() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            if (!email || !password) {
+                showNotification("Por favor, preencha email e senha.", 'error');
+                return;
+            }
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                // User document creation is handled by onAuthStateChanged listener
+            } catch (error) {
+                showNotification(`Erro de cadastro: ${error.message}`, 'error');
+                console.error("Erro de cadastro:", error);
+            }
+        }
+
+
+        async function logoutUser() {
+            try {
+                await auth.signOut();
+                showNotification("Você foi desconectado.", 'success');
+            } catch (error) {
+                showNotification(`Erro ao sair: ${error.message}`, 'error');
+                console.error("Erro ao sair:", error);
+            }
+        }
+        document.getElementById('logoutButton').addEventListener('click', logoutUser);
+
+
+        async function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                showNotification(`Erro ao entrar com Google: ${error.message}`, 'error');
+                console.error("Erro Google login:", error);
+            }
+        }
+
+
+        async function signInWithFacebook() {
+            const provider = new firebase.auth.FacebookAuthProvider();
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                showNotification(`Erro ao entrar com Facebook: ${error.message}`, 'error');
+                console.error("Erro Facebook login:", error);
+            }
+        }
+
+
+        async function forgotPassword() {
+            const email = prompt("Digite seu email para redefinir a senha:");
+            if (email) {
+                try {
+                    await auth.sendPasswordResetEmail(email);
+                    showNotification("Link de redefinição de senha enviado para seu email.", 'success');
+                } catch (error) {
+                    showNotification(`Erro ao redefinir senha: ${error.message}`, 'error');
+                    console.error("Erro redefinir senha:", error);
+                }
+            }
+        }
+
+
+        function updateProfileInfo() {
+            const profileName = document.getElementById('profileName');
+            const profileEmail = document.getElementById('profileEmail');
+            const profilePlan = document.getElementById('profilePlan');
+            const profilePicture = document.getElementById('profilePicture');
+
+
+            if (currentUser) {
+                profileName.textContent = currentUser.displayName || currentUser.email;
+                profileEmail.textContent = currentUser.email;
+                profilePlan.textContent = userPlan ? userPlan.name : 'Grátis';
+                profilePicture.src = currentUser.profilePic || 'https://via.placeholder.com/120?text=Perfil';
+            } else {
+                profileName.textContent = 'Visitante';
+                profileEmail.textContent = 'N/A';
+                profilePlan.textContent = 'Grátis';
+                profilePicture.src = 'https://via.placeholder.com/120?text=Perfil';
+            }
+        }
+
+
+        async function updateProfile() {
+            if (!currentUser) {
+                showNotification("Você precisa estar logado para atualizar o perfil.", 'error');
+                return;
+            }
+
+
+            const newName = prompt("Digite seu novo nome (deixe em branco para não alterar):", currentUser.displayName);
+            let profilePicUrl = currentUser.profilePic;
+
+
+            // Handle profile picture upload
+            const file = document.getElementById('profileImageInput').files[0];
+            if (file) {
+                const storageRef = storage.ref(`profile_pics/${currentUser.uid}/${file.name}`);
+                try {
+                    const snapshot = await storageRef.put(file);
+                    profilePicUrl = await snapshot.ref.getDownloadURL();
+                    showNotification("Foto de perfil atualizada!", 'success');
+                } catch (error) {
+                    showNotification(`Erro ao enviar foto: ${error.message}`, 'error');
+                    console.error("Erro upload foto perfil:", error);
+                }
+            }
+
+
+            try {
+                await db.collection('users').doc(currentUser.uid).update({
+                    name: newName || currentUser.displayName,
+                    profilePic: profilePicUrl
+                });
+                if (newName) currentUser.displayName = newName;
+                currentUser.profilePic = profilePicUrl;
+                updateProfileInfo();
+                showNotification("Perfil atualizado com sucesso!", 'success');
+            } catch (error) {
+                showNotification(`Erro ao atualizar perfil: ${error.message}`, 'error');
+                console.error("Erro ao atualizar perfil:", error);
+            }
+        }
+
+
+        async function resetPassword() {
+            if (!currentUser || !currentUser.email) {
+                showNotification("Você precisa estar logado para redefinir a senha.", 'error');
+                return;
+            }
+            try {
+                await auth.sendPasswordResetEmail(currentUser.email);
+                showNotification("Link de redefinição de senha enviado para seu email.", 'success');
+            } catch (error) {
+                showNotification(`Erro ao enviar link de redefinição: ${error.message}`, 'error');
+                console.error("Erro redefinir senha:", error);
+            }
+        }
+
+
+
+
+        // --- Tab Navigation ---
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            if (evt) {
+                evt.currentTarget.className += " active";
+            } else {
+                // If called without event (e.g., from a button click inside a section)
+                const targetButton = Array.from(document.getElementsByClassName("tab-button")).find(btn => btn.textContent.toLowerCase().includes(tabName.replace('Section', '').toLowerCase()));
+                if (targetButton) {
+                    targetButton.className += " active";
+                }
+            }
+            // Update SEO for the current tab
+            let title = "Dhannyllo+ ULTRA IA";
+            let description = "Sua plataforma completa de entretenimento e espiritualidade.";
+            switch (tabName) {
+                case 'homeSection':
+                    title = "Dhannyllo+ ULTRA IA - Plataforma Suprema Integrada";
+                    description = "Dhannyllo+ ULTRA IA: Streaming de vídeos, áudio, jogos, cursos, livros, rede social, chat, IA avançada, ferramentas de criação, marketplace, e conteúdo espiritual em uma única plataforma integrada.";
+                    break;
+                case 'streamingSection':
+                    title = "Dhannyllo+ ULTRA IA - Streaming Premium";
+                    description = "Assista a vídeos ilimitados, faça upload e explore conteúdo exclusivo.";
+                    break;
+                case 'iaSection':
+                    title = "Dhannyllo+ ULTRA IA - IA Avançada";
+                    description = "Experimente nosso chat IA, gerador de orações, RPG interativo e outras ferramentas de inteligência artificial.";
+                    break;
+                case 'communitySection':
+                    title = "Dhannyllo+ ULTRA IA - Comunidade";
+                    description = "Conecte-se, compartilhe posts e converse em tempo real com a comunidade Dhannyllo+.";
+                    break;
+                case 'spiritualSection':
+                    title = "Dhannyllo+ ULTRA IA - Conteúdo Espiritual";
+                    description = "Aprofunde-se na Bíblia, Evangelhos Gnósticos, Livros Apócrifos e mais conteúdos sagrados.";
+                    break;
+                case 'toolsSection':
+                    title = "Dhannyllo+ ULTRA IA - Ferramentas Inteligentes";
+                    description = "Converta unidades, gere senhas seguras e consulte a previsão do tempo.";
+                    break;
+                case 'profileSection':
+                    title = "Dhannyllo+ ULTRA IA - Meu Perfil";
+                    description = "Gerencie suas informações de perfil, plano de assinatura e configurações da conta.";
+                    break;
+                // Add more cases for other sections
+            }
+            updateSEO(title, description);
+            handleResize(); // Ensure layout adjusts if needed
+        }
+
+
+        // --- SEO and Responsiveness ---
+        function updateSEO(title, description) {
+            document.title = title;
+            document.querySelector('meta[name="description"]').setAttribute('content', description);
+            document.querySelector('meta[property="og:title"]').setAttribute('content', title);
+            document.querySelector('meta[property="og:description"]').setAttribute('content', description);
+        }
+
+
+        function handleResize() {
+            const width = window.innerWidth;
+            const contentGrids = document.querySelectorAll('.content-grid, .video-library, .ia-tool-grid');
+
+
+            if (width < 768) {
+                contentGrids.forEach(grid => {
+                    grid.style.gridTemplateColumns = '1fr';
+                });
+            } else if (width < 1024) {
+                contentGrids.forEach(grid => {
+                    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                });
+            } else {
+                contentGrids.forEach(grid => {
+                    grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+                });
+            }
+        }
+        window.addEventListener('resize', handleResize);
+
+
+
+
+        // --- Modals ---
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+
+        // --- Notifications ---
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            container.appendChild(notification);
+
+
+            setTimeout(() => {
+                notification.remove();
+            }, 5000); // Remove after 5 seconds
+        }
+
+
+        // --- Accessibility Controls ---
+        function toggleAccessibilityControls() {
+            document.getElementById('accessibilityControls').classList.toggle('active');
+        }
+
+
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+        }
+
+
+        function toggleDyslexicFont() {
+            document.body.classList.toggle('dyslexic-font');
+            localStorage.setItem('dyslexicFont', document.body.classList.contains('dyslexic-font'));
+        }
+
+
+        let currentFontSize = 16; // Default font size
+        function increaseFontSize() {
+            currentFontSize += 1;
+            document.body.style.fontSize = `${currentFontSize}px`;
+            localStorage.setItem('fontSize', currentFontSize);
+        }
+
+
+        function decreaseFontSize() {
+            if (currentFontSize > 10) { // Minimum font size
+                currentFontSize -= 1;
+                document.body.style.fontSize = `${currentFontSize}px`;
+                localStorage.setItem('fontSize', currentFontSize);
+            }
+        }
+
+
+        function resetFontSize() {
+            currentFontSize = 16;
+            document.body.style.fontSize = `${currentFontSize}px`;
+            localStorage.removeItem('fontSize');
+        }
+
+
+        function loadSettings() {
+            if (localStorage.getItem('highContrast') === 'true') {
+                document.body.classList.add('high-contrast');
+            }
+            if (localStorage.getItem('dyslexicFont') === 'true') {
+                document.body.classList.add('dyslexic-font');
+            }
+            const storedFontSize = localStorage.getItem('fontSize');
+            if (storedFontSize) {
+                currentFontSize = parseInt(storedFontSize);
+                document.body.style.fontSize = `${currentFontSize}px`;
+            }
+        }
+
+
+        // --- Streaming Section Logic ---
+        const mainVideoPlayer = document.getElementById('mainVideoPlayer');
+        const playPauseButton = document.getElementById('playPauseButton');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeSpan = document.getElementById('currentTime');
+        const durationTimeSpan = document.getElementById('durationTime');
+        const fullscreenButton = document.getElementById('fullscreenButton');
+        const videoLibraryDiv = document.getElementById('videoLibrary');
+        const fileInput = document.getElementById('fileInput');
+        const uploadProgress = document.getElementById('uploadProgress');
+
+
+        // Video Player Controls
+        playPauseButton.addEventListener('click', () => {
+            if (mainVideoPlayer.paused) {
+                mainVideoPlayer.play();
+                playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                mainVideoPlayer.pause();
+                playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
+
+
+        mainVideoPlayer.addEventListener('timeupdate', () => {
+            const progress = (mainVideoPlayer.currentTime / mainVideoPlayer.duration) * 100;
+            progressBar.value = progress;
+            currentTimeSpan.textContent = formatTime(mainVideoPlayer.currentTime);
+        });
+
+
+        mainVideoPlayer.addEventListener('loadedmetadata', () => {
+            durationTimeSpan.textContent = formatTime(mainVideoPlayer.duration);
+        });
+
+
+        progressBar.addEventListener('input', () => {
+            const time = (progressBar.value / 100) * mainVideoPlayer.duration;
+            mainVideoPlayer.currentTime = time;
+        });
+
+
+        fullscreenButton.addEventListener('click', () => {
+            if (mainVideoPlayer.requestFullscreen) {
+                mainVideoPlayer.requestFullscreen();
+            } else if (mainVideoPlayer.mozRequestFullScreen) { /* Firefox */
+                mainVideoPlayer.mozRequestFullScreen();
+            } else if (mainVideoPlayer.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                mainVideoPlayer.webkitRequestFullscreen();
+            } else if (mainVideoPlayer.msRequestFullscreen) { /* IE/Edge */
+                mainVideoPlayer.msRequestFullscreen();
+            }
+        });
+
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+
+        // Video Upload (Firebase Storage and Firestore)
+        fileInput.addEventListener('change', handleFileUpload);
+
+
+        async function handleFileUpload(event) {
+            if (!currentUser) {
+                showNotification("Você precisa estar logado para fazer upload de vídeos.", 'error');
+                openModal('login');
+                return;
+            }
+
+
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+
+            // Check user plan limits (simulated)
+            const userVideosRef = db.collection('videos').where('userId', '==', currentUser.uid);
+            const userVideosSnapshot = await userVideosRef.get();
+            if (userVideosSnapshot.docs.length >= userPlan.maxVideos) {
+                showNotification(`Você atingiu o limite de ${userPlan.maxVideos} vídeos para o seu plano ${userPlan.name}.`, 'error');
+                return;
+            }
+
+
+            const fileSize = file.size;
+            const currentUsage = (await storage.ref(`user_uploads/${currentUser.uid}`).listAll()).items.reduce((sum, item) => sum + item.size, 0); // This is approximate and could be slow for many files. Real usage would require more complex tracking.
+
+
+            if (currentUsage + fileSize > userPlan.storageLimit) {
+                 showNotification(`Você atingiu o limite de armazenamento de ${userPlan.storageLimit / (1024 * 1024)}MB para o seu plano ${userPlan.name}.`, 'error');
+                 return;
+            }
+
+
+            const storageRef = storage.ref(`user_uploads/${currentUser.uid}/${file.name}`);
+            const uploadTask = storageRef.put(file);
+
+
+            uploadProgress.style.display = 'block';
+
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    uploadProgress.textContent = `Upload: ${progress.toFixed(0)}%`;
+                },
+                (error) => {
+                    showNotification(`Erro no upload: ${error.message}`, 'error');
+                    console.error("Upload error:", error);
+                    uploadProgress.style.display = 'none';
+                },
+                async () => {
+                    uploadProgress.style.display = 'none';
+                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                    const videoTitle = prompt("Título do vídeo:", file.name.split('.').slice(0, -1).join('.'));
+
+
+                    await db.collection('videos').add({
+                        title: videoTitle,
+                        url: downloadURL,
+                        userId: currentUser.uid,
+                        userName: currentUser.displayName,
+                        uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        thumbnail: 'https://via.placeholder.com/250x150?text=Vídeo' // Placeholder, could generate real thumbnails
+                    });
+                    showNotification("Vídeo enviado e salvo!", 'success');
+                    loadAllVideos(); // Refresh video list
+                }
+            );
+        }
+
+
+        // Drag and drop for video upload
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            document.getElementById('fileInput').files = files;
+            handleFileUpload({ target: { files: files } });
+        });
+
+
+        // Load Videos from Firestore
+        async function loadAllVideos() {
+            videoLibraryDiv.innerHTML = '<h3>Carregando vídeos...</h3>';
+            try {
+                const videosSnapshot = await db.collection('videos').orderBy('uploadedAt', 'desc').get();
+                videoLibraryDiv.innerHTML = ''; // Clear loading message
+
+
+                if (videosSnapshot.empty) {
+                    videoLibraryDiv.innerHTML = '<p>Nenhum vídeo disponível. Faça upload do seu primeiro vídeo!</p>';
+                    return;
+                }
+
+
+                videosSnapshot.forEach(doc => {
+                    const video = doc.data();
+                    const videoItem = document.createElement('div');
+                    videoItem.className = 'video-item';
+                    videoItem.setAttribute('data-src', video.url);
+                    videoItem.innerHTML = `
+                        <img src="${video.thumbnail}" alt="${video.title}">
+                        <h4>${video.title}</h4>
+                        <p style="font-size: 0.9em; color: var(--text-secondary); text-align: left;">Por: ${video.userName || 'Anônimo'}</p>
+                    `;
+                    videoItem.addEventListener('click', () => {
+                        mainVideoPlayer.src = video.url;
+                        mainVideoPlayer.play();
+                        playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+                        showNotification(`Reproduzindo: ${video.title}`, 'info');
+                    });
+                    videoLibraryDiv.appendChild(videoItem);
+                });
+            } catch (error) {
+                showNotification(`Erro ao carregar vídeos: ${error.message}`, 'error');
+                console.error("Erro ao carregar vídeos:", error);
+                videoLibraryDiv.innerHTML = '<p style="color: var(--error-color);">Erro ao carregar vídeos. Tente novamente mais tarde.</p>';
+            }
+        }
+
+
+
+
+        // --- IA Advanced Section Logic ---
+        function showIATool(toolId) {
+            // Hide all IA tool interfaces
+            const iaToolInterfaces = document.querySelectorAll('#iaSection > div[id]:not(.ia-tool-grid)');
+            iaToolInterfaces.forEach(tool => tool.style.display = 'none');
+            // Show the selected IA tool interface
+            document.getElementById(toolId).style.display = 'block';
+            showNotification(`Ferramenta de IA: ${toolId.replace('ia', '').replace('Generator', ' Gerador').replace('Game', ' Jogo').replace('Translator', ' Tradutor').replace('Summarizer', ' Resumidor')}`, 'info');
+        }
+
+
+        // IA Chat
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+
+
+        async function sendAIChatMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+
+            addMessageToChat(message, 'user');
+            chatInput.value = '';
+
+
+            // Simulate AI response (Replace with actual AI API call)
+            const aiResponse = await getAIResponse(message);
+            addMessageToChat(aiResponse, 'ai');
+
+
+            if ('speechSynthesis' in window) {
+                const utter = new SpeechSynthesisUtterance(aiResponse);
+                utter.lang = 'pt-BR';
+                speechSynthesis.speak(utter);
+            }
+        }
+
+
+        function addMessageToChat(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message-${sender}`;
+            msgDiv.textContent = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to bottom
+        }
+
+
+        async function getAIResponse(query) {
+            // This is a simulated AI response. For a real application,
+            // you would call a backend serverless function (e.g., Firebase Cloud Function)
+            // which in turn calls a real AI API like Google Gemini, OpenAI GPT, etc.
+            // Example for real API call (conceptual):
+            /*
+            try {
+                const response = await fetch('/api/gemini-chat', { // Your Cloud Function endpoint
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const data = await response.json();
+                return data.response;
+            } catch (error) {
+                console.error("Erro na API da IA:", error);
+                return "Desculpe, tive um problema para processar sua solicitação.";
+            }
+            */
+
+
+            const lowerQuery = query.toLowerCase();
+            if (lowerQuery.includes("olá") || lowerQuery.includes("oi")) {
+                return "Olá! Como posso ajudar você hoje na sua jornada Dhannyllo+?";
+            } else if (lowerQuery.includes("qual seu nome")) {
+                return "Eu sou Dhannyllo+ IA, sua assistente virtual. Fui criada para servir você nesta plataforma.";
+            } else if (lowerQuery.includes("streaming")) {
+                return "Nossa plataforma oferece streaming de alta qualidade. Qual tipo de conteúdo você gostaria de assistir?";
+            } else if (lowerQuery.includes("firebase")) {
+                return "Firebase é um conjunto de ferramentas do Google que usamos para autenticação, banco de dados, armazenamento e muito mais. É o coração do nosso backend!";
+            } else if (lowerQuery.includes("inteligência artificial") || lowerQuery.includes("ia")) {
+                return "Minhas capacidades de inteligência artificial incluem chat interativo, geração de conteúdo, e em breve, recomendações personalizadas e análise de dados avançada.";
+            } else if (lowerQuery.includes("tempo") || lowerQuery.includes("clima")) {
+                 return "Para informações do tempo, por favor, vá para a aba 'Ferramentas' e use a ferramenta de Previsão do Tempo.";
+            } else if (lowerQuery.includes("obrigado") || lowerQuery.includes("agradeço")) {
+                return "De nada! Fico feliz em ajudar. Há mais alguma coisa em que posso ser útil?";
+            } else {
+                return "Hmm, essa é uma pergunta interessante! Estou sempre aprendendo. Você pode tentar reformular ou perguntar sobre outros recursos da plataforma.";
+            }
+        }
+
+
+        // Prayer Generator
+        const prayerThemeInput = document.getElementById('prayerThemeInput');
+        const saidaOracao = document.getElementById('saidaOracao');
+
+
+        function gerarOracao() {
+            const tema = prayerThemeInput.value.trim();
+            let oracao;
+
+
+            if (tema.toLowerCase().includes("paz")) {
+                oracao = "Senhor, concedei-nos a vossa paz que excede todo entendimento. Que ela inunde nossos corações, lares e o mundo. Amém.";
+            } else if (tema.toLowerCase().includes("gratidão")) {
+                oracao = "Deus de bondade, transborda em nós a gratidão por cada bênção, por cada desafio superado e por vossa presença constante em nossas vidas. Amém.";
+            } else if (tema.toLowerCase().includes("força")) {
+                oracao = "Pai Celestial, fortalecei-nos em meio às tribulações. Que a vossa força nos sustente e nos ajude a vencer todo obstáculo. Ajuda-nos a crer em Teu poder e a confiar em Teus planos, mesmo diante da incerteza. Amém.";
+            } else if (tema.toLowerCase().includes("família")) {
+                oracao = "Senhor, abençoa e protege nossas famílias. Que o amor, a paz e a união prevaleçam em nossos lares. Guarda-nos de todo mal e guia-nos em Teus caminhos. Amém.";
+            } else if (tema.toLowerCase().includes("cura")) {
+                oracao = "Deus de misericórdia, clamamos por cura e restauração. Estende a Tua mão sobre os enfermos, renova suas forças e traz alívio para suas dores. Que a Tua vontade se cumpra em seus corpos e almas. Amém.";
+            } else {
+                oracao = `Ó Divino Criador, iluminai-nos com vossa sabedoria e guiai-nos em nossos caminhos. Que a vossa presença seja sentida em cada passo, e que a paz e a harmonia reinem em nossos corações. Pedimos por ${tema ? tema : 'todas as necessidades'}, com fé e devoção. Amém.`;
+            }
+            saidaOracao.innerText = oracao;
+            if ('speechSynthesis' in window) {
+                const fala = new SpeechSynthesisUtterance(oracao);
+                fala.lang = 'pt-BR';
+                speechSynthesis.speak(fala);
+            }
+        }
+
+
+        // RPG Interactive
+        const saidaRPG = document.getElementById("saidaRPG");
+        function rpgResposta(escolha) {
+            let resposta;
+            if (escolha === 'nomear') {
+                resposta = "Você nomeia a criatura de 'Simba'. Deus sorri com sua criatividade e o leão se curva em reverência. Sua jornada continua, um novo dia surge e você sente o chamado para explorar a Floresta do Conhecimento, onde a Árvore da Vida pulsa com energia divina. O que você fará?";
+                document.getElementById('rpgChoices').innerHTML = `
+                    <button onclick="rpgResposta('arvore_vida')">Ir à Árvore da Vida</button>
+                    <button onclick="rpgResposta('rio_eden')">Seguir o Rio do Éden</button>
+                `;
+            } else if (escolha === 'contemplar') {
+                resposta = "Você contempla a beleza do Éden. O Espírito Divino paira sobre as águas, e a paz inunda seu coração. Uma voz suave te guia para o Rio da Vida, onde a sabedoria ancestral aguarda. O que você fará?";
+                document.getElementById('rpgChoices').innerHTML = `
+                    <button onclick="rpgResposta('arvore_vida')">Ir à Árvore da Vida</button>
+                    <button onclick="rpgResposta('rio_eden')">Seguir o Rio do Éden</button>
+                `;
+            } else if (escolha === 'arvore_vida') {
+                resposta = "Ao se aproximar da Árvore da Vida, você sente uma energia imensa. Um portal de luz se abre, revelando visões de eras passadas e futuras. Você absorve um conhecimento profundo sobre a criação e seu propósito. Você ganhou Sabedoria Divina! Fim da aventura por enquanto.";
+                document.getElementById('rpgChoices').innerHTML = '<p>A aventura foi concluída!</p><button onclick="resetRPG()">Reiniciar</button>';
+            } else if (escolha === 'rio_eden') {
+                resposta = "Você segue o fluxo do Rio do Éden, que te leva a uma gruta escondida. Lá, você encontra uma fonte de águas cristalinas e bebe dela, sentindo sua alma purificada e sua intuição aguçada. Você ganhou Intuição Pura! Fim da aventura por enquanto.";
+                 document.getElementById('rpgChoices').innerHTML = '<p>A aventura foi concluída!</p><button onclick="resetRPG()">Reiniciar</button>';
+            } else {
+                resposta = "Escolha inválida. Tente novamente.";
+            }
+            saidaRPG.innerText = resposta;
+            if ('speechSynthesis' in window) {
+                const utter = new SpeechSynthesisUtterance(resposta);
+                utter.lang = 'pt-BR';
+                speechSynthesis.speak(utter);
+            }
+        }
+
+
+        function resetRPG() {
+             document.getElementById('rpgIntro').textContent = "Você desperta no Jardim do Éden, o paraíso recém-criado. Diante de você, um majestoso leão dourado se aproxima curiosamente.";
+             document.getElementById('rpgChoices').innerHTML = `
+                <button onclick="rpgResposta('nomear')">Nomear a criatura</button>
+                <button onclick="rpgResposta('contemplar')">Contemplar a beleza do Éden</button>
+            `;
+            saidaRPG.innerText = '';
+            showNotification("RPG reiniciado!", "info");
+        }
+
+
+
+
+        function simularEncarnacao() {
+            showNotification("💫 Simulador de Encarnações ativado! A IA está revelando suas vidas passadas e lições espirituais (emulado).", 'info');
+            // For a real implementation, this would involve complex AI models,
+            // perhaps based on user inputs about their life experiences or
+            // astrological data, combined with a vast knowledge base of spiritual teachings.
+            // This is a placeholder for a much deeper feature.
+            setTimeout(() => {
+                const encarnacoes = [
+                    "Você foi um sábio escriba no antigo Egito, focado no conhecimento e na preservação da sabedoria.",
+                    "Em uma vida anterior, você foi um guerreiro corajoso no Japão feudal, aprendendo sobre honra e disciplina.",
+                    "Você experimentou a vida como um artista boêmio em Paris do século XIX, explorando a criatividade e a paixão.",
+                    "Em outra encarnação, você foi um curandeiro xamânico na América do Sul pré-colombiana, conectado à natureza e à cura.",
+                    "Você viveu como um visionário tecnológico no futuro distante, explorando os limites da consciência digital."
+                ];
+                const licoes = [
+                    "A lição principal desta vida é o desapego e a aceitação das mudanças.",
+                    "Você está aprendendo a importância do perdão e da compaixão.",
+                    "Sua jornada atual foca na autoconfiança e na expressão autêntica do seu eu.",
+                    "O aprendizado atual envolve o equilíbrio entre o material e o espiritual.",
+                    "Esta vida o desafia a abraçar sua singularidade e a liderar com amor."
+                ];
+                const encarnacaoAleatoria = encarnacoes[Math.floor(Math.random() * encarnacoes.length)];
+                const licaoAleatoria = licoes[Math.floor(Math.random() * licoes.length)];
+                alert(`Sua IA revela:\n\nVida Passada: ${encarnacaoAleatoria}\nLição Espiritual Atual: ${licaoAleatoria}`);
+            }, 2000);
+        }
+
+
+        // IA Translator (Simulated)
+        function translateText() {
+            const inputText = document.getElementById('translateInput').value;
+            const targetLang = document.getElementById('translateLang').value;
+            const translatedOutput = document.getElementById('translatedOutput');
+
+
+            if (!inputText) {
+                translatedOutput.textContent = "Por favor, digite o texto a ser traduzido.";
+                translatedOutput.style.color = 'var(--error-color)';
+                return;
+            }
+
+
+            // Simple mock translation based on target language
+            let translatedText = "";
+            if (targetLang === "en") {
+                translatedText = `(Traduzido para Inglês) ${inputText.split(' ').reverse().join(' ')}`;
+            } else if (targetLang === "es") {
+                translatedText = `(Traduzido para Espanhol) ${inputText.split(' ').reverse().join(' ')}`;
+            } else if (targetLang === "fr") {
+                translatedText = `(Traduzido para Francês) ${inputText.split(' ').reverse().join(' ')}`;
+            } else { // pt or unsupported
+                 translatedText = `(Traduzido para Português - original) ${inputText}`;
+            }
+
+
+            translatedOutput.textContent = translatedText;
+            translatedOutput.style.color = 'var(--success-color)';
+            showNotification("Tradução IA concluída!", "success");
+
+
+            // For a real implementation, you'd use a Translation API like Google Cloud Translation.
+            /*
+            fetch('https://translation.googleapis.com/language/translate/v2?key=YOUR_GOOGLE_CLOUD_API_KEY', {
+                method: 'POST',
+                body: JSON.stringify({
+                    q: inputText,
+                    target: targetLang,
+                    source: 'pt' // Assuming input is Portuguese
+                }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                translatedOutput.textContent = data.data.translations[0].translatedText;
+                translatedOutput.style.color = 'var(--success-color)';
+            })
+            .catch(error => {
+                console.error("Erro na API de Tradução:", error);
+                translatedOutput.textContent = "Erro ao traduzir. Tente novamente.";
+                translatedOutput.style.color = 'var(--error-color)';
+            });
+            */
+        }
+
+
+        // IA Summarizer (Simulated)
+        function summarizeText() {
+            const inputText = document.getElementById('summarizeInput').value;
+            const summarizedOutput = document.getElementById('summarizedOutput');
+
+
+            if (!inputText) {
+                summarizedOutput.textContent = "Por favor, cole o texto a ser resumido.";
+                summarizedOutput.style.color = 'var(--error-color)';
+                return;
+            }
+
+
+            // Simple mock summarization: take the first few sentences
+            const sentences = inputText.split('. ').filter(s => s.trim() !== '');
+            const summary = sentences.slice(0, Math.min(sentences.length, 3)).join('. ') + (sentences.length > 3 ? '...' : '');
+
+
+            summarizedOutput.textContent = `(Resumo IA) ${summary}`;
+            summarizedOutput.style.color = 'var(--success-color)';
+            showNotification("Resumo IA concluído!", "success");
+
+
+            // For a real implementation, you'd use an NLP API for text summarization.
+            /*
+            fetch('/api/summarize-text', { // Your backend endpoint
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: inputText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                summarizedOutput.textContent = data.summary;
+                summarizedOutput.style.color = 'var(--success-color)';
+            })
+            .catch(error => {
+                console.error("Erro na API de Resumo:", error);
+                summarizedOutput.textContent = "Erro ao resumir. Tente novamente.";
+                summarizedOutput.style.color = 'var(--error-color)';
+            });
+            */
+        }
+
+
+        // --- Community Section Logic (Firebase Firestore) ---
+        const postContentInput = document.getElementById('postContent');
+        const postListDiv = document.getElementById('postList');
+        const realtimeChatMessagesDiv = document.getElementById('realtimeChatMessages');
+        const realtimeChatInput = document.getElementById('realtimeChatInput');
+
+
+        async function createPost() {
+            if (!currentUser) {
+                showNotification("Você precisa estar logado para publicar posts.", 'error');
+                openModal('login');
+                return;
+            }
+            const content = postContentInput.value.trim();
+            if (!content) {
+                showNotification("O post não pode estar vazio.", 'error');
+                return;
+            }
+
+
+            try {
+                await db.collection('posts').add({
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName || currentUser.email,
+                    content: content,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    likes: 0,
+                    comments: []
+                });
+                postContentInput.value = '';
+                showNotification("Post publicado com sucesso!", 'success');
+            } catch (error) {
+                showNotification(`Erro ao publicar post: ${error.message}`, 'error');
+                console.error("Erro ao criar post:", error);
+            }
+        }
+
+
+        // Realtime listener for posts
+        if (db) { // Ensure Firebase is initialized
+            db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                postListDiv.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const post = doc.data();
+                    const postId = doc.id;
+                    const postItem = document.createElement('div');
+                    postItem.className = 'post-item';
+                    const timestamp = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString() : 'Just now';
+                    postItem.innerHTML = `
+                        <h4>${post.userName}</h4>
+                        <p>${post.content}</p>
+                        <p class="timestamp">${timestamp}</p>
+                        `;
+                    postListDiv.appendChild(postItem);
+                });
+            }, error => {
+                console.error("Erro ao carregar posts em tempo real:", error);
+                showNotification("Erro ao carregar posts da comunidade.", 'error');
+            });
+
+
+            // Realtime listener for chat messages
+            db.collection('chatMessages').orderBy('timestamp').limit(50).onSnapshot(snapshot => {
+                realtimeChatMessagesDiv.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const message = doc.data();
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = `message-${message.userId === (currentUser ? currentUser.uid : null) ? 'user' : 'ai'}`; // 'ai' is a simplified representation for others
+                    const senderName = message.userName || 'Anônimo';
+                    const timestamp = message.timestamp ? new Date(message.timestamp.toDate()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    msgDiv.textContent = `${senderName} (${timestamp}): ${message.text}`;
+                    realtimeChatMessagesDiv.appendChild(msgDiv);
+                });
+                realtimeChatMessagesDiv.scrollTop = realtimeChatMessagesDiv.scrollHeight;
+            }, error => {
+                console.error("Erro ao carregar mensagens do chat em tempo real:", error);
+            });
+        }
+
+
+
+
+        async function sendRealtimeChatMessage() {
+            if (!currentUser) {
+                showNotification("Você precisa estar logado para enviar mensagens no chat.", 'error');
+                openModal('login');
+                return;
+            }
+            const messageText = realtimeChatInput.value.trim();
+            if (!messageText) return;
+
+
+            try {
+                await db.collection('chatMessages').add({
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName || currentUser.email,
+                    text: messageText,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                realtimeChatInput.value = '';
+            } catch (error) {
+                showNotification(`Erro ao enviar mensagem: ${error.message}`, 'error');
+                console.error("Erro ao enviar chat:", error);
+            }
+        }
+
+
+
+
+        // --- Spiritual Content Section Logic ---
+        const bookSelect = document.getElementById('bookSelect');
+        const chapterSelect = document.getElementById('chapterSelect');
+        const verseSelect = document.getElementById('verseSelect');
+        const textContentDisplay = document.getElementById('textContentDisplay');
+
+
+        let bibliaData = {}; // Stores the entire Bible JSON
+
+
+        // Load Bible/Spiritual Text Data (Simulated JSON structure)
+        async function carregarBibliaData() {
+            // In a real application, you'd fetch this from a CDN or Firebase Storage.
+            // For now, it's hardcoded for demonstration within a single HTML.
+            // This is a minimal example, a full Bible would be massive.
+            const rawBibliaData = {
+                "Gênesis": {
+                    "1": {
+                        "1": { "Texto": "No princípio, Deus criou os céus e a terra.", "Origem": "Bíblia Católica" },
+                        "2": { "Texto": "A terra era sem forma e vazia; e havia trevas sobre a face do abismo.", "Origem": "Bíblia Protestante" }
+                    },
+                    "2": {
+                        "7": { "Texto": "Então o Senhor Deus formou o homem do pó da terra e soprou em suas narinas o fôlego da vida; e o homem se tornou um ser vivente.", "Origem": "Bíblia Protestante" }
+                    }
+                },
+                "Evangelho de Tomé": {
+                    "1": {
+                        "1": { "Texto": "Estas são as palavras secretas que Jesus vivo disse e que Dídimo Judas Tomé escreveu.", "Origem": "Evangelhos Gnósticos" }
+                    }
+                },
+                "Livro de Enoque": {
+                    "1": {
+                        "1": { "Texto": "Palavras da bênção de Enoque com as quais ele abençoou os eleitos e os justos.", "Origem": "Apócrifos" }
+                    }
+                }
+            };
+            bibliaData = rawBibliaData;
+            populateBookSelect();
+            showNotification("Conteúdo espiritual carregado!", 'info');
+        }
+
+
+        function populateBookSelect() {
+            bookSelect.innerHTML = '<option value="">Selecione um Livro</option>';
+            for (const bookName in bibliaData) {
+                const option = document.createElement('option');
+                option.value = bookName;
+                option.textContent = bookName;
+                bookSelect.appendChild(option);
+            }
+        }
+
+
+        function carregarCapitulos() {
+            const selectedBook = bookSelect.value;
+            chapterSelect.innerHTML = '<option value="">Selecione um Capítulo</option>';
+            verseSelect.innerHTML = '<option value="">Selecione um Versículo</option>'; // Clear verses too
+
+
+            if (selectedBook && bibliaData[selectedBook]) {
+                for (const chapterNum in bibliaData[selectedBook]) {
+                    const option = document.createElement('option');
+                    option.value = chapterNum;
+                    option.textContent = `Capítulo ${chapterNum}`;
+                    chapterSelect.appendChild(option);
+                }
+            }
+        }
+
+
+        function carregarVersiculos() {
+            const selectedBook = bookSelect.value;
+            const selectedChapter = chapterSelect.value;
+            verseSelect.innerHTML = '<option value="">Selecione um Versículo</option>';
+
+
+            if (selectedBook && selectedChapter && bibliaData[selectedBook] && bibliaData[selectedBook][selectedChapter]) {
+                for (const verseRef in bibliaData[selectedBook][selectedChapter]) {
+                    const option = document.createElement('option');
+                    option.value = verseRef;
+                    option.textContent = `Versículo ${verseRef}`;
+                    verseSelect.appendChild(option);
+                }
+            }
+        }
+
+
+        function exibirVersiculo() {
+            const selectedBook = bookSelect.value;
+            const selectedChapter = chapterSelect.value;
+            const selectedVerse = verseSelect.value;
+
+
+            if (selectedBook && selectedChapter && selectedVerse &&
+                bibliaData[selectedBook] && bibliaData[selectedBook][selectedChapter] &&
+                bibliaData[selectedBook][selectedChapter][selectedVerse]) {
+
+
+                const verseData = bibliaData[selectedBook][selectedChapter][selectedVerse];
+                textContentDisplay.innerHTML = `
+                    <h3>${selectedBook} ${selectedChapter}:${selectedVerse}</h3>
+                    <p><strong>${selectedVerse}</strong>: ${verseData.Texto} <em>(${verseData.Origem})</em></p>
+                `;
+                showNotification(`Exibindo ${selectedBook} ${selectedChapter}:${selectedVerse}`, 'info');
+            } else {
+                textContentDisplay.innerHTML = '<p style="color: var(--error-color);">Selecione um livro, capítulo e versículo válidos.</p>';
+                showNotification("Por favor, selecione um versículo válido.", 'error');
+            }
+        }
+
+
+
+
+        // --- Tools Section Logic ---
+
+
+        // Unit Converter
+        const units = {
+            "length": {
+                "meter": 1, "kilometer": 1000, "centimeter": 0.01, "millimeter": 0.001,
+                "inch": 0.0254, "foot": 0.3048, "yard": 0.9144, "mile": 1609.34
+            },
+            "weight": {
+                "kilogram": 1, "gram": 0.001, "milligram": 0.000001, "pound": 0.453592, "ounce": 0.0283495
+            },
+            "temperature": {
+                "celsius": { toBase: (c) => c, fromBase: (b) => b },
+                "fahrenheit": { toBase: (f) => (f - 32) * 5/9, fromBase: (c) => (c * 9/5) + 32 },
+                "kelvin": { toBase: (k) => k - 273.15, fromBase: (c) => c + 273.15 }
+            },
+            "volume": {
+                "liter": 1, "milliliter": 0.001, "gallon": 3.78541, "quart": 0.946353, "cup": 0.236588
+            }
+        };
+
+
+        const inputValue = document.getElementById('inputValue');
+        const fromUnitSelect = document.getElementById('fromUnit');
+        const toUnitSelect = document.getElementById('toUnit');
+        const convertButton = document.getElementById('convertButton');
+        const conversionResult = document.getElementById('conversionResult');
+
+
+        function populateUnitSelects() {
+            fromUnitSelect.innerHTML = '';
+            toUnitSelect.innerHTML = '';
+            for (const category in units) {
+                const optgroupFrom = document.createElement('optgroup');
+                optgroupFrom.label = category.charAt(0).toUpperCase() + category.slice(1);
+                const optgroupTo = document.createElement('optgroup');
+                optgroupTo.label = category.charAt(0).toUpperCase() + category.slice(1);
+
+
+                for (const unit in units[category]) {
+                    const optionFrom = document.createElement('option');
+                    optionFrom.value = `${category}:${unit}`;
+                    optionFrom.textContent = unit.charAt(0).toUpperCase() + unit.slice(1);
+                    optgroupFrom.appendChild(optionFrom);
+
+
+                    const optionTo = document.createElement('option');
+                    optionTo.value = `${category}:${unit}`;
+                    optionTo.textContent = unit.charAt(0).toUpperCase() + unit.slice(1);
+                    optgroupTo.appendChild(optionTo);
+                }
+                fromUnitSelect.appendChild(optgroupFrom);
+                toUnitSelect.appendChild(optgroupTo);
+            }
+        }
+
+
+        function convertUnits() {
+            const value = parseFloat(inputValue.value);
+            const [fromCategory, fromUnit] = fromUnitSelect.value.split(':');
+            const [toCategory, toUnit] = toUnitSelect.value.split(':');
+
+
+            if (isNaN(value)) {
+                conversionResult.textContent = 'Por favor, insira um número válido.';
+                conversionResult.style.color = 'var(--error-color)';
+                return;
+            }
+            if (fromCategory !== toCategory) {
+                conversionResult.textContent = 'Não é possível converter entre categorias diferentes (ex: comprimento para peso).';
+                conversionResult.style.color = 'var(--error-color)';
+                return;
+            }
+
+
+            let result;
+            if (fromCategory === "temperature") {
+                const tempUnits = units[fromCategory];
+                const baseValue = tempUnits[fromUnit].toBase(value);
+                result = tempUnits[toUnit].fromBase(baseValue);
+            } else {
+                const baseValue = value * units[fromCategory][fromUnit];
+                result = baseValue / units[toCategory][toUnit];
+            }
+
+
+            conversionResult.textContent = `${value} ${fromUnit} é igual a ${result.toFixed(4)} ${toUnit}.`;
+            conversionResult.style.color = 'var(--success-color)';
+            showNotification("Conversão de unidades realizada!", "success");
+        }
+
+
+        // Event Listeners for Unit Converter
+        convertButton.addEventListener('click', convertUnits);
+
+
+        // Password Generator
+        const passwordLengthInput = document.getElementById('passwordLength');
+        const generatePasswordButton = document.getElementById('generatePasswordButton');
+        const generatedPasswordDisplay = document.getElementById('generatedPassword');
+
+
+        function generatePassword() {
+            const length = parseInt(passwordLengthInput.value);
+            if (isNaN(length) || length < 8 || length > 32) {
+                generatedPasswordDisplay.textContent = 'Tamanho da senha deve ser entre 8 e 32.';
+                generatedPasswordDisplay.style.color = 'var(--error-color)';
+                return;
+            }
+
+
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]|:;<>,.?/~";
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            generatedPasswordDisplay.textContent = password;
+            generatedPasswordDisplay.style.color = 'var(--success-color)';
+            showNotification("Senha gerada com sucesso!", "success");
+        }
+        generatePasswordButton.addEventListener('click', generatePassword);
+
+
+        // OpenWeatherMap API Integration
+        const cityInput = document.getElementById('cityInput');
+        const weatherInfo = document.getElementById('weatherInfo');
+        const OPENWEATHER_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your actual API key
+
+
+        async function getWeatherData() {
+            const city = cityInput.value.trim();
+            if (!city) {
+                weatherInfo.innerHTML = '<p style="color: var(--error-color);">Por favor, digite o nome da cidade.</p>';
+                return;
+            }
+
+
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=pt_br`;
+
+
+            weatherInfo.innerHTML = '<p>Carregando dados meteorológicos...</p>';
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Cidade não encontrada.');
+                }
+                const data = await response.json();
+                displayWeather(data);
+                showNotification(`Previsão do tempo para ${city} obtida!`, 'success');
+            } catch (error) {
+                weatherInfo.innerHTML = `<p style="color: var(--error-color);">Erro ao obter previsão: ${error.message}</p>`;
+                showNotification(`Erro ao obter previsão: ${error.message}`, 'error');
+                console.error("Erro OpenWeatherMap API:", error);
+            }
+        }
+
+
+        function displayWeather(data) {
+            const temp = data.main.temp;
+            const feelsLike = data.main.feels_like;
+            const description = data.weather[0].description;
+            const humidity = data.main.humidity;
+            const windSpeed = data.wind.speed;
+            const iconCode = data.weather[0].icon;
+            const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+
+            weatherInfo.innerHTML = `
+                <p><strong>Cidade:</strong> ${data.name}, ${data.sys.country}</p>
+                <p><strong>Temperatura:</strong> ${temp.toFixed(1)}°C <img src="${iconUrl}" alt="${description}" style="vertical-align: middle; width: 50px; height: 50px;"></p>
+                <p><strong>Sensação Térmica:</strong> ${feelsLike.toFixed(1)}°C</p>
+                <p><strong>Condição:</strong> ${description.charAt(0).toUpperCase() + description.slice(1)}</p>
+                <p><strong>Umidade:</strong> ${humidity}%</p>
+                <p><strong>Vento:</strong> ${windSpeed} m/s</p>
+            `;
+        }
+
+
+        // --- Event Listeners and Initial Calls ---
+        function setupEventListeners() {
+            // Initialize AI Assistant button (for quick access to chat)
+            document.getElementById('aiAssistantButton').addEventListener('click', () => {
+                openTab(null, 'iaSection');
+                showIATool('iaChat');
+                showNotification("Acessando Chat IA...", 'info');
+            });
+
+
+            // Initial tab load
+            openTab(null, 'homeSection'); // Show home section by default
+        }
+
+
+        // Ensure all elements are available before adding listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // These event listeners will be added once the DOM is fully loaded.
+            // Some, like setupAuthListener and initializeApp, are called earlier based on 'load' event.
+            // The setupEventListeners function consolidates common listeners.
+        });
+    </script>
+</body>
+</html>
