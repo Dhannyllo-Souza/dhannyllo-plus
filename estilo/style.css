@@ -970,14 +970,6 @@ ul {
 
 
 
-    .nav-links li {
-        margin: 10px 0;
-        text-align: center;
-    }
-
-
-
-
     /* user-actions should now be toggled along with nav-links */
     .user-actions {
         display: none;
@@ -991,8 +983,15 @@ ul {
         box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
         z-index: 999;
         align-items: center;
-        margin-top: calc(10px * 4 + 20px); /* Adjust based on nav-links height */
+        margin-top: calc(10px * 4 + 20px); /* Adjust based on nav-links height, approx 4 links + padding */
     }
+
+
+    .nav-links.active + .user-actions.active { /* Specific selector for when both are active */
+        top: calc(70px + var(--nav-links-height, 200px)); /* Example: Adjust based on actual nav-links height */
+    }
+
+
 
 
     .user-actions.active {

@@ -36,6 +36,8 @@
     const platformContent = document.getElementById('platform-content');
     const heroSection = document.getElementById('home');
     const plansSection = document.getElementById('plans');
+    const featuresSection = document.getElementById('features'); // Adicionado
+    const contactSection = document.getElementById('contact'); // Adicionado
     const exploreNowBtn = document.getElementById('exploreNow');
     const viewPlansHomeBtn = document.getElementById('viewPlansHome');
 
@@ -230,7 +232,7 @@
                 updateUIForLoggedInUser();
                 hideModal();
                 alert(`Bem-vindo(a) de volta, ${currentUser.name}!`);
-                showPlatformContent();
+                showPlatformContent(); // Garante que a plataforma é mostrada
             } else {
                 alert('Email ou senha inválidos.');
             }
@@ -301,7 +303,7 @@
             updateUIForLoggedInUser();
             hideModal();
             alert(`Cadastro realizado com sucesso, ${newUser.name}! Você está no plano de Teste Gratuito.`);
-            showPlatformContent();
+            showPlatformContent(); // Garante que a plataforma é mostrada
         }
     }
 
@@ -323,15 +325,13 @@
             // Ao logar, esconder seções iniciais e mostrar plataforma
             heroSection.style.display = 'none';
             plansSection.style.display = 'none';
-            // Certifica-se que features e contact também estão ocultos se usuário logado
-            document.getElementById('features').style.display = 'none';
-            document.getElementById('contact').style.display = 'none';
+            featuresSection.style.display = 'none'; // Esconde features
+            contactSection.style.display = 'none'; // Esconde contact
 
 
             platformContent.style.display = 'block';
             loadPlatformContent(); // Carrega o conteúdo das abas
-            // Ativa a primeira aba da plataforma por padrão
-            document.querySelector('.tab-button').click();
+            // Ativa a primeira aba da plataforma por padrão (já feito em showPlatformContent)
 
 
         } else {
@@ -341,13 +341,13 @@
             // Se o usuário não está logado, mostra as seções hero, features e planos
             heroSection.style.display = 'flex';
             plansSection.style.display = 'block';
-            document.getElementById('features').style.display = 'block'; // Mostra features
-            document.getElementById('contact').style.display = 'block'; // Mostra contact
+            featuresSection.style.display = 'block'; // Mostra features
+            contactSection.style.display = 'block'; // Mostra contact
             platformContent.style.display = 'none';
         }
         // Garante que o menu hambúrguer esteja fechado e com os estilos corretos
         navLinksContainer.classList.remove('active');
-        userActionsContainer.classList.remove('active');
+        userActionsContainer.classList.remove('active'); // Sempre remove 'active' para ambos
     }
 
 
@@ -356,8 +356,8 @@
     function showPlatformContent() {
         heroSection.style.display = 'none';
         plansSection.style.display = 'none';
-        document.getElementById('features').style.display = 'none';
-        document.getElementById('contact').style.display = 'none';
+        featuresSection.style.display = 'none';
+        contactSection.style.display = 'none';
         platformContent.style.display = 'block';
         // Remove a classe 'active' de todos os nav-links e ativa o primeiro tab-button
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
@@ -380,8 +380,8 @@
         // Redireciona para a página inicial (seção Hero, Features e Planos)
         heroSection.style.display = 'flex';
         plansSection.style.display = 'block';
-        document.getElementById('features').style.display = 'block';
-        document.getElementById('contact').style.display = 'block';
+        featuresSection.style.display = 'block';
+        contactSection.style.display = 'block';
         platformContent.style.display = 'none';
         // Reinicia a ativação do link de navegação para "Início"
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
@@ -455,6 +455,12 @@
                     // Lógica para "comprar" ou "atualizar" plano
                     // Aqui você implementaria a lógica de pagamento/alteração de plano
                     currentUser.plan = selectedPlan.id;
+                    // Atualiza o usuário no array de usuários (para persistência)
+                    const userIndex = users.findIndex(u => u.email === currentUser.email);
+                    if (userIndex !== -1) {
+                        users[userIndex] = currentUser;
+                        localStorage.setItem('users', JSON.stringify(users));
+                    }
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
                     userPlan = selectedPlan;
                     alert(`Parabéns! Você agora está no plano ${selectedPlan.name}.`);
@@ -655,9 +661,9 @@
                             // Ao navegar para seções iniciais/marketing, esconde a plataforma
                             platformContent.style.display = 'none';
                             heroSection.style.display = (targetId === '#home') ? 'flex' : 'none';
-                            document.getElementById('features').style.display = (targetId === '#features') ? 'block' : 'none';
+                            featuresSection.style.display = (targetId === '#features') ? 'block' : 'none';
                             plansSection.style.display = (targetId === '#plans') ? 'block' : 'none';
-                            document.getElementById('contact').style.display = (targetId === '#contact') ? 'block' : 'none';
+                            contactSection.style.display = (targetId === '#contact') ? 'block' : 'none';
                         } else {
                             // Ao navegar para abas da plataforma, mostra a plataforma
                             showPlatformContent();
@@ -665,9 +671,9 @@
                     } else { // Se o usuário NÃO estiver logado
                          // Sempre mostra as seções de marketing/página inicial
                         heroSection.style.display = (targetId === '#home') ? 'flex' : 'none';
-                        document.getElementById('features').style.display = (targetId === '#features') ? 'block' : 'none';
+                        featuresSection.style.display = (targetId === '#features') ? 'block' : 'none';
                         plansSection.style.display = (targetId === '#plans') ? 'block' : 'none';
-                        document.getElementById('contact').style.display = (targetId === '#contact') ? 'block' : 'none';
+                        contactSection.style.display = (targetId === '#contact') ? 'block' : 'none';
                         platformContent.style.display = 'none'; // Plataforma sempre oculta se não logado
                     }
                 }
